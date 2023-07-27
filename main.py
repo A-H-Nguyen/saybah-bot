@@ -57,29 +57,16 @@ async def join(ctx):
     if (ctx.author.voice): # If the person is in a channel
         channel = ctx.author.voice.channel
         await channel.connect()
-        # await ctx.send('Bot joined')
     else: #But is (s)he isn't in a voice channel
         await ctx.send("You must be in a voice channel first so I can join it.")
-    # if not ctx.message.author.voice:
-    #     await ctx.send("{} is not connected to a voice channel".format(ctx.message.author.name))
-    #     return
-    # else:
-    #     channel = ctx.message.author.voice.channel
-    # await channel.connect()
 
 @bot.command(name='leave', help='To make the bot leave the voice channel')
 async def leave(ctx):
-    if ctx.voice_client:
-        await ctx.guild.voice_client.disconnect() 
-        await ctx.send('Bot left')
+    voice_client = ctx.message.guild.voice_client
+    if voice_client.is_connected():
+        await voice_client.disconnect()
     else:
-        await ctx.send("I'm not in a voice channel, use the join command to make me join")
-
-    # voice_client = ctx.message.guild.voice_client
-    # if voice_client.is_connected():
-    #     await voice_client.disconnect()
-    # else:
-    #     await ctx.send("The bot is not connected to a voice channel.")
+        await ctx.send("The bot is not connected to a voice channel.")
 
 @bot.command(name='play', help='To play a youtube link')
 async def play(ctx,url):
