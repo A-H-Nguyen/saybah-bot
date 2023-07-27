@@ -1,7 +1,8 @@
 import asyncio
 import discord
 import os
-import youtube_dl
+# import youtube_dl
+import yt_dlp as youtube_dl
 
 from discord.ext import commands,tasks
 from dotenv import load_dotenv
@@ -28,6 +29,7 @@ ytdl_format_options = {
     'default_search': 'auto',
     'source_address': '0.0.0.0' # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
+
 ffmpeg_options = {
     'options': '-vn'
 }
@@ -51,6 +53,8 @@ class YTDLSource(discord.PCMVolumeTransformer):
         filename = data['title'] if stream else ytdl.prepare_filename(data)
         return filename
 
+
+
 # Commands:
 @bot.command(name='join', help='Tells the bot to join the voice channel')
 async def join(ctx):
@@ -66,7 +70,7 @@ async def leave(ctx):
     if voice_client.is_connected():
         await voice_client.disconnect()
     else:
-        await ctx.send("The bot is not connected to a voice channel.")
+        await ctx.send("I'm not connected to a voice channel.")
 
 @bot.command(name='play', help='To play a youtube link')
 async def play(ctx,url):
@@ -75,11 +79,12 @@ async def play(ctx,url):
         voice_channel = server.voice_client
         async with ctx.typing():
             filename = await YTDLSource.from_url(url, loop=bot.loop)
-            voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg.exe", source=filename))
+            voice_channel.play(discord.FFmpegPCMAudio(executable="ffmpeg", source=filename))
         await ctx.send('**Now playing:** {}'.format(filename))
     except:
         await ctx.send("The bot is not connected to a voice channel.")
 
+################################################## UNTESTED COMMANDS ##################################################
 @bot.command(name='pause', help='This command pauses the song')
 async def pause(ctx):
     voice_client = ctx.message.guild.voice_client
@@ -103,6 +108,7 @@ async def stop(ctx):
         await voice_client.stop()
     else:
         await ctx.send("The bot is not playing anything at the moment.")
+#######################################################################################################################
 
 @bot.command()
 async def hello(ctx):

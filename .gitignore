@@ -1,2 +1,5 @@
 bot-env/
+ffmpeg-6.0/
+
+*.webm
 .env
