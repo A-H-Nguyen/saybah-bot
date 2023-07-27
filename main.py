@@ -1,16 +1,14 @@
 import asyncio
 import discord
 import os
-# import youtube_dl
+# import youtube_dl # currently youtube_dl has some bugs so use yt_dlp instead
 import yt_dlp as youtube_dl
 
 from discord.ext import commands,tasks
 from dotenv import load_dotenv
 
 load_dotenv()
-# Get the API token from the .env file.
-__TOKEN__ = os.getenv("token")
-# print(__TOKEN__)
+__TOKEN__ = os.getenv("token") # Get the API token from the .env file.
 
 intents = discord.Intents().all()
 client = discord.Client(intents=intents)
@@ -84,7 +82,6 @@ async def play(ctx,url):
     except:
         await ctx.send("The bot is not connected to a voice channel.")
 
-################################################## UNTESTED COMMANDS ##################################################
 @bot.command(name='pause', help='This command pauses the song')
 async def pause(ctx):
     voice_client = ctx.message.guild.voice_client
@@ -108,7 +105,6 @@ async def stop(ctx):
         await voice_client.stop()
     else:
         await ctx.send("The bot is not playing anything at the moment.")
-#######################################################################################################################
 
 @bot.command()
 async def hello(ctx):
