@@ -1,12 +1,16 @@
 name: test
 channels:
+  - anaconda
   - conda-forge
   - nmcginn
 dependencies:
+  - aiohttp
+  - libffi
+
+
   - py-cord
   - py-cord[voice]
   - yt-dlp
-  - aiohttp
   - asyncio
   - beautifulsoup4
   - spotipy
